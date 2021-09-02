@@ -13,13 +13,14 @@ def get_politico():
         content = []
         isitcontent = []
         for cd in encoded:
-            if isinstance(cd, BeautifulSoup.Cdata):
+            if "<p>" in cd:
                 content.append(cd)
-        print('')
     print('Done: Politico')
 
 
 def get_euronews():
+    with open('Results/news_en.html', 'rb')as euronews:
+        soup = BeautifulSoup(euronews, 'html.parser')
     print('Done: Euronews')
 
 
