@@ -1,21 +1,30 @@
 from bs4 import BeautifulSoup
+import string
+import re
 
 
 def get_politico():
     with open('Results/news_www.politico.eu.html', 'rb')as politico:
         soup = BeautifulSoup(politico, 'html.parser')
-    paragraphs = []
+    titles  = []
+    links = []
+    articles = []
     items = soup.find_all('item')
     for item in items:
         title = item.title.text
         link = item.link.next
         encoded = item.findAll(text=True)
         content = []
-        isitcontent = []
         for cd in encoded:
             if "<p>" in cd:
                 content.append(cd)
-    print('Done: Politico')
+        article = ", ".join(content)
+        article = re.sub('<.*?>', '', article)
+        article = ''.join(article.strip().split('\\n'))
+        article.replace('\\', '')
+        article = re.sub('/', '  ', article)
+        articles.append(article)
+    return titles, links, articles
 
 
 def get_euronews():
@@ -33,7 +42,7 @@ def get_bbc():
 
 
 def get_html_text():
-    get_politico()
+    politico_titles, politico_links, politico_articles = get_politico()
     # get_euronews()
     # get_washington_post()
     # get_bbc()
