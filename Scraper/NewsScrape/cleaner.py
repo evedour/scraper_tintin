@@ -13,7 +13,7 @@ def get_politico():
     items = soup.find_all('item')
     for item in items:
         title = item.title.text
-        link = item.link.next
+        link = item.link.next # needs next because it appears as link/ (not link) in the soup
         link = link.replace('\r', '')
         link = ''.join(link.strip().split('\\n'))
         link.replace('\\', '')
@@ -74,6 +74,7 @@ def get_bbc():
 def get_html_text():
     politico_titles, politico_links, politico_articles = get_politico()
     euronews_titles, euronews_links, euronews_articles = get_euronews()
-    print('')
     # get_washington_post()
     # get_bbc()
+    # get_aljazeera()
+    # get_eureporter
