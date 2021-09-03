@@ -11,7 +11,6 @@ class PeterParker(scrapy.Spider):
                    'http://rss.cnn.com/rss/edition_world.rss',
                    'http://feeds.feedburner.com/euronews/en/home/',
                    'http://feeds.bbci.co.uk/news/world/rss.xml',
-                   'http://feeds.washingtonpost.com/rss/world',
                    'https://www.politico.eu/feed/',
                    'https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/world/rss.xml']
         for source in sources:

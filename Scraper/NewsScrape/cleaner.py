@@ -2,6 +2,16 @@ from bs4 import BeautifulSoup
 import string
 import re
 import requests
+import MySQLdb
+
+
+def clean_link(link):
+    link = link.replace('\r', '')
+    link = link.replace('\t', '')
+    link = link.strip()
+    link = ''.join(link.strip().split('\\n'))
+    link.replace('\\', '')
+    return link
 
 
 def get_politico():
@@ -14,9 +24,7 @@ def get_politico():
     for item in items:
         title = item.title.text
         link = item.link.next # needs next because it appears as link/ (not link) in the soup
-        link = link.replace('\r', '')
-        link = ''.join(link.strip().split('\\n'))
-        link.replace('\\', '')
+        link = clean_link(link)
         encoded = item.findAll(text=True)
         content = []
         for cd in encoded:
@@ -44,9 +52,7 @@ def get_euronews():
         title = item.title.text
         link = item.link.next
         # replacing link breaks (\r, \n) because requests can't handle them
-        link = link.replace('\r', '')
-        link = ''.join(link.strip().split('\\n'))
-        link.replace('\\', '')
+        link = clean_link(link)
         # get article
         r = requests.get(link)
         good_soup = BeautifulSoup(r.content, 'html.parser')
@@ -63,18 +69,102 @@ def get_euronews():
     return titles, links, articles
 
 
-def get_washington_post():
-    print('Done: Washington Post')
-
-
 def get_bbc():
-    print('Done: BBC')
+    with open('Results/news_news.html', 'rb')as bbc_news:
+        soup = BeautifulSoup(bbc_news, 'html.parser')
+    titles = []
+    links = []
+    articles = []
+    items = soup.find_all('item')
+    for item in items:
+        title = item.title.text
+        link = item.link.next
+        r = requests.get(link)
+        good_soup = BeautifulSoup(r.content, 'html.parser')
+        article = []
+        for article_tag in good_soup.find_all('article', class_="ssrcss-xalfp3-ArticleWrapper e1nh2i2l6"):
+            for div in article_tag.find_all('div', class_='ssrcss-uf6wea-RichTextComponentWrapper e1xue1i87'):
+                for p in div.find_all('p'):
+                    article.append(p.text)
+        content = ",".join(article)
+        articles.append(content)
+        titles.append(title)
+        links.append(link)
+    return titles, links, articles
+
+
+def get_aljazeera():
+    with open('Results/news_xml.html', 'rb')as AJ:
+        soup = BeautifulSoup(AJ, 'html.parser')
+    titles = []
+    links = []
+    articles = []
+    items = soup.find_all('item')
+    for item in items:
+        title = item.title.text
+        link = item.link.next
+        r = requests.get(clean_link(link))
+        good_soup = BeautifulSoup(r.content, 'html.parser')
+        article = []
+        for div in good_soup.find_all('div', class_='wysiwyg wysiwyg--all-content css-1vsenwb'):
+            for p in div.find_all('p'):
+                article.append(p.text)
+        content = ', '.join(article)
+        articles.append(content)
+        titles.append(title)
+        links.append(link)
+        print('')
+
+    return titles, links, articles
+
+
+def get_eureporter():
+    with open('Results/news_www.eureporter.co.html', 'rb') as eureporter:
+        soup = BeautifulSoup(eureporter, 'html.parser')
+    titles = []
+    links = []
+    articles = []
+    items = soup.find_all('item')
+    for item in items:
+        title = item.title.text
+        link = clean_link(item.link.next)
+        encoded = item.findAll(text=True)
+        content = []
+        for cd in encoded:
+            if "<p>" in cd:
+                content.append(cd)
+        article = ", ".join(content)
+        article = re.sub('<.*?>', '', article)
+        article = ''.join(article.strip().split('\\n'))
+        article.replace('\\', '')
+        article = re.sub('/', '  ', article)
+        articles.append(article)
+        titles.append(title)
+        links.append(link)
+
+    return titles, links, articles
 
 
 def get_html_text():
+
     politico_titles, politico_links, politico_articles = get_politico()
+    save_to_db('politico', politico_titles, politico_links, politico_articles)
     euronews_titles, euronews_links, euronews_articles = get_euronews()
-    # get_washington_post()
-    # get_bbc()
-    # get_aljazeera()
-    # get_eureporter
+    save_to_db('euronews', euronews_titles, euronews_links, euronews_articles)
+    bbc_titles, bbc_links, bbc_articles = get_bbc()
+    save_to_db('bbc', bbc_titles,bbc_links,bbc_articles)
+    aj_titles, aj_links, aj_articles = get_aljazeera()
+    save_to_db('aljazeera', aj_titles,aj_links,aj_articles)
+    eureporter_titles, eureporter_links, eureporter_articles = get_eureporter()
+    save_to_db('eureporter', eureporter_titles,eureporter_links,eureporter_articles)
+
+
+def save_to_db(source, titles, links, articles):
+    db = MySQLdb.connect('localhost', 'root', '', 'articleDB', charset='utf8')
+    insertrec = db.cursor()
+
+    for title in titles:
+        tlt = title.replace("'", '"')
+        article = articles[titles.index(title)].replace("'", '"')
+        sqlquery = f'insert into articles(source,title,link,article) values(\'{source}\', \'{tlt}\',\'{links[titles.index(title)]}\',\'{article}\')'
+        insertrec.execute(sqlquery)
