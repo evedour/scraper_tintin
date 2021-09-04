@@ -18,7 +18,6 @@ class PeterParker(scrapy.Spider):
 
     def parse(self, response):
         page = response.url.split('/')[-3]
-        print(page)
         filename = f'../../Results/news_{page}.html'
         with open(filename, 'wb') as f:
             f.write(response.body)

@@ -3,6 +3,7 @@ import string
 import re
 import requests
 import MySQLdb
+import time
 
 
 def clean_link(link):
@@ -113,7 +114,6 @@ def get_aljazeera():
         articles.append(content)
         titles.append(title)
         links.append(link)
-        print('')
 
     return titles, links, articles
 
@@ -147,17 +147,32 @@ def get_eureporter():
 
 def get_html_text():
 
+    print(f'Starting parse: Politico')
     politico_titles, politico_links, politico_articles = get_politico()
+    print(f'Saving to database...')
     save_to_db('politico', politico_titles, politico_links, politico_articles)
+
+    print(f'Starting parse: Euronews')
     euronews_titles, euronews_links, euronews_articles = get_euronews()
+    print(f'Saving to database...')
     save_to_db('euronews', euronews_titles, euronews_links, euronews_articles)
+
+    print(f'Starting parse: BBC News')
     bbc_titles, bbc_links, bbc_articles = get_bbc()
+    print(f'Saving to database...')
     save_to_db('bbc', bbc_titles,bbc_links,bbc_articles)
+
+    print(f'Starting parse: Aljazeera')
     aj_titles, aj_links, aj_articles = get_aljazeera()
+    print(f'Saving to database...')
     save_to_db('aljazeera', aj_titles,aj_links,aj_articles)
+
+    print(f'Starting parse: Eureporter')
     eureporter_titles, eureporter_links, eureporter_articles = get_eureporter()
+    print(f'Saving to database...')
     save_to_db('eureporter', eureporter_titles,eureporter_links,eureporter_articles)
 
+    print('All articles inserted to database and can be found in localhost')
 
 def save_to_db(source, titles, links, articles):
     db = MySQLdb.connect('localhost', 'root', '', 'articleDB', charset='utf8')
@@ -165,6 +180,7 @@ def save_to_db(source, titles, links, articles):
 
     for title in titles:
         tlt = title.replace("'", '"')
-        article = articles[titles.index(title)].replace("'", '"')
+        # get article on title's index, encoded and decoded to ignore ascii characters
+        article = articles[titles.index(title)].replace("'", '"').encode("ascii", "replace").decode()
         sqlquery = f'insert into articles(source,title,link,article) values(\'{source}\', \'{tlt}\',\'{links[titles.index(title)]}\',\'{article}\')'
         insertrec.execute(sqlquery)
