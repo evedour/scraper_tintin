@@ -28,5 +28,6 @@ def tokenize():
         # TODO: remove punctuation
         entities = nltk.chunk.ne_chunk(tagged)
         # TODO: Save tokenized and tagged articles
+        tokenized_articles.append(tagged)
         print('')
     print('')
