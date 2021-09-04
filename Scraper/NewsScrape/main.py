@@ -1,4 +1,5 @@
 from Scraper.NewsScrape import cleaner
+from Scraper.NewsScrape import tokenizer
 import scrapy
 from scrapy.crawler import CrawlerProcess
 from NewsScrape.spiders import parker
@@ -21,3 +22,7 @@ if user_in.upper() == 'Y':
 user_in = input('Run parser? Y/N: ')
 if user_in.upper() == 'Y':
     cleaner.get_html_text()
+
+user_in = input('Run tokenizer? Y/N')
+if user_in.upper() == 'Y':
+    tokenizer.tokenize()
