@@ -23,6 +23,6 @@ user_in = input('Run parser? Y/N: ')
 if user_in.upper() == 'Y':
     cleaner.get_html_text()
 
-user_in = input('Run tokenizer? Y/N')
+user_in = input('Run tokenizer? Y/N: ')
 if user_in.upper() == 'Y':
     tokenizer.tokenize()

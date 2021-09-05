@@ -1,6 +1,7 @@
 import nltk
 import cleaner
 import MySQLdb
+import json
 
 
 def get_articles():
@@ -16,18 +17,20 @@ def tokenize():
     content = get_articles()
     tokenized_articles = []
     links = []
-    for link, article in  content:
+    keys = ['token', 'tag']
+    for link, article in content:
         # remove tab, newlines etc
         article = cleaner.clean_link(article)
         # save links
-        # TODO: is this needed?
         links.append(link)
         # use nltk to tokenize and tag article
         tokens = nltk.word_tokenize(article)
         tagged = nltk.pos_tag(tokens)
         # TODO: remove punctuation
         entities = nltk.chunk.ne_chunk(tagged)
-        # TODO: Save tokenized and tagged articles
         tokenized_articles.append(tagged)
-        print('')
+
+    with open('Results/pos_tags.json', 'w') as output:
+        json.dump(dict(zip(links, tokenized_articles)), output)
+        output.close
     print('')
