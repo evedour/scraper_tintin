@@ -1,3 +1,3 @@
-import nltk
+from bs4 import BeautifulSoup
+import requests
 
-nltk.download()
