@@ -1,9 +1,11 @@
 from Scraper.NewsScrape import cleaner
 from Scraper.NewsScrape import tokenizer
+from Scraper.NewsScrape import vector_representation
 import scrapy
 from scrapy.crawler import CrawlerProcess
 from NewsScrape.spiders import parker
 import time
+import connect_to_db
 import os
 
 print(f'\n########Σύστημα συγκομιδής και δεικτοδότησης σελίδων########\n')
@@ -26,3 +28,15 @@ if user_in.upper() == 'Y':
 user_in = input('Run tokenizer? Y/N: ')
 if user_in.upper() == 'Y':
     tokenizer.tokenize()
+
+user_in = input('Run vector representation? Y/N: ')
+if user_in.upper() == 'Y':
+    user_in = input('Please type "all" to run the program for the entire database or "one" to select an article by title: ')
+    if user_in.lower() == 'all':
+        links = connect_to_db.get_all()
+    else:
+        links = []
+        user_in = 'Please insert a title: '
+        links.append(connect_to_db.get_link_from_title(user_in))
+
+    vector_representation.vectorize(links)

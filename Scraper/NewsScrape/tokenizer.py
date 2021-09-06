@@ -2,14 +2,16 @@ import nltk
 import cleaner
 import MySQLdb
 import json
+from nltk.corpus import stopwords
+
 
 
 def get_articles():
     # connect to phpmyadmin and get links and articles
     db = MySQLdb.connect('localhost', 'root', '', 'articleDB', charset='utf8')
-    cursor = db.cursor()
-    cursor.execute("""SELECT link, article FROM articles""")
-    return cursor.fetchall()
+    crs = db.cursor()
+    crs.execute("""SELECT link, article FROM articles""")
+    return crs.fetchall()
 
 
 def tokenize():
@@ -25,12 +27,14 @@ def tokenize():
         links.append(link)
         # use nltk to tokenize and tag article
         tokens = nltk.word_tokenize(article)
-        tagged = nltk.pos_tag(tokens)
-        # TODO: remove punctuation
+        no_stopwords = [word for word in tokens if not word in stopwords.words()]
+        tagged = nltk.pos_tag(no_stopwords)
         entities = nltk.chunk.ne_chunk(tagged)
         tokenized_articles.append(tagged)
 
+    # save tokenized and tagged articles in json format (link: [('token','tag'),....])
     with open('Results/pos_tags.json', 'w') as output:
         json.dump(dict(zip(links, tokenized_articles)), output)
         output.close
     print('')
+
