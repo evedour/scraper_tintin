@@ -42,10 +42,10 @@ def make_lemmas(data):
 
 
 def exctract_themes(doc, name):
+    # tokenizer
     tokenized = make_tokens(doc)
     lemmatized = make_lemmas(tokenized)
     with open(f'Data/themes_{name}.txt', 'w')as lemmas_out:
         for lemma in lemmatized:
             lemmas_out.write(f'{lemma},')
-    # return dict(zip(range(len(data)), tokenized))
     return lemmatized

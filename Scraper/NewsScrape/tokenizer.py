@@ -24,7 +24,6 @@ def get_articles():
     db = MySQLdb.connect('localhost', 'root', '', 'articleDB', charset='utf8')
     crs = db.cursor()
     crs.execute("""SELECT link, article FROM articles""")
-
     return crs.fetchall()
 
 
@@ -51,6 +50,7 @@ def tokenize():
         tokenizer = RegexpTokenizer(r'\w+')
         tokens = tokenizer.tokenize(rem_num)
         insert_tokenized(tokens, link)
+        # remove stopwords
         no_stopwords = [word.lower() for word in tokens if not word in stopwords.words()]
         tagged = nltk.pos_tag(no_stopwords)
         entities = nltk.chunk.ne_chunk(tagged)
@@ -61,4 +61,3 @@ def tokenize():
         json.dump(dict(zip(links, tokenized_articles)), output)
         output.close
     print('Tokenized and tagged articles can be found under Results in pos_tags.json')
-

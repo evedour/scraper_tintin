@@ -15,7 +15,7 @@
 | Προσκομιστής Ιστοσελίδων (Scraper)      | [parker.py](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/NewsScrape/spiders/parker.py)       |
 | Προπεξεργασία Δεδομένων   | [cleaner.py](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/cleaner.py)        |
 | Μορφοσυντακτική Ανάλυση   | [tokenizer.py](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/tokenizer.py)        |
-| Αναπαράσταση Ιστοσελίδων στο Μοντέλο Διανυσματικού Χώρου   | [tokenizer.py](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/tokenizer.py)        |
+| Αναπαράσταση Ιστοσελίδων στο Μοντέλο Διανυσματικού Χώρου   | [tokenizer.py](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/tokenizer.py), [lemmatizer.py]()        |
 | Δημιουργία Ευρετηρίου  | [indexer.py](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/indexer.py)        |
 | Αποθήκευση και Επαναφόρτωση Ευρετηρίου   | [indexer.py](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/indexer.py)        |
 | Αξιολόγηση Ευρετηρίου   | [φαίνεται στην αναφορά](https://github.com/evedour/scraper_tintin/blob/main/Report/1041567.docx)        |

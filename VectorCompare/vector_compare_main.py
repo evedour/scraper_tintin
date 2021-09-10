@@ -19,7 +19,7 @@ def main():
 
     user_in = input('Run preprocessor? Y/N: ')
     if user_in.upper() == 'Y':
-        idx = 100
+        idx = 3
         e_processed = []
         a_processed = []
         for doc in collection_e.data[:idx]:
@@ -32,7 +32,7 @@ def main():
         e_dictionary = gensim.corpora.Dictionary(e_processed)
         a_dictionary = gensim.corpora.Dictionary(a_processed)
         # create a dictionary reporting appearances of each word in each doc of collection e
-        # this holds the number of appearances for each word in dicionary
+        # this holds the number of appearances for each word in dictionary
         e_cor = [e_dictionary.doc2bow(doc) for doc in e_processed]
         a_cor = [a_dictionary.doc2bow(doc) for doc in a_processed]
 
@@ -79,4 +79,4 @@ def main():
         for i in range(3):
             print(f'Article number {i} has been categorized as {collection_e.target_names[collection_e.target[result_jaccard[i][1]]]}\n')
 
-    print('')
+main()

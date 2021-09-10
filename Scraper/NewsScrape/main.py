@@ -1,7 +1,10 @@
 from Scraper.NewsScrape import cleaner
 from Scraper.NewsScrape import tokenizer
+from Scraper.NewsScrape import lemmatizer
 from Scraper.NewsScrape import indexer
 import scrapy
+import gensim
+from gensim import corpora
 from scrapy.crawler import CrawlerProcess
 from NewsScrape.spiders import parker
 import connect_to_db
@@ -13,6 +16,7 @@ import time
 print(f'\n########Σύστημα συγκομιδής και δεικτοδότησης σελίδων########\n')
 print(f'####Project Γλωσσικής Τεχνολογίας - Σεπτέμβρης 2021####\n')
 print('##########################################################')
+
 
 def make_query():
     flag = True
@@ -29,7 +33,6 @@ def make_query():
         timer_start = time.time()
         index_query.query(query_as_list)
         print(f'Query \"{inputs}\" took {time.time()-timer_start} seconds')
-
 
 
 user_in = input(f'Run spider? Y/N: ')
@@ -50,9 +53,19 @@ user_in = input('Run tokenizer? Y/N: ')
 if user_in.upper() == 'Y':
     tokenizer.tokenize()
 
-user_in = input('Run vector representation? Y/N: ')
+user_in = input('Run vector representation and lemmatizer? Y/N: ')
 if user_in.upper() == 'Y':
     links = connect_to_db.get_all()
-    indexer.indexer(links)
+    thesaurus_dict, cor = lemmatizer.stem_lemamtize(links)
+    print('Saving results....')
+    thesaurus_dict.save('Results/thesaurus_dictionary.txtdic')
+
+user_in = input('Make index? Y/N')
+if user_in.upper() == 'Y':
+    thesaurus_dict = corpora.Dictionary.load('Results/thesaurus_dictionary.txtdic')
+    links = connect_to_db.get_all()
+    tokenized = lemmatizer.get_tagged_from_json(links)
+    cor = [thesaurus_dict.doc2bow(doc) for doc in tokenized]
+    indexer.make_index(thesaurus_dict, cor, links)
 
 make_query()
