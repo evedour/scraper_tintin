@@ -27,26 +27,27 @@ def make_query():
         print(f'Query \"{inputs}\" took {time.time()-timer_start} seconds')
 
 
-user_in = input(f'Run spider? Y/N: ')
-if user_in.upper() == 'Y':
-    t1_start = time.process_time()
-    os.chdir('NewsScrape\spiders')
-    os.system('scrapy crawl parker')
-    print(f'Spider finished, scraping took {time.process_time()-t1_start} seconds\n')
-    print(f'The scraped content can be found under Results')
-    os.chdir('../../')
+def main():
+    user_in = input(f'Run spider? Y/N: ')
+    if user_in.upper() == 'Y':
+        t1_start = time.process_time()
+        os.chdir('NewsScrape\spiders')
+        os.system('scrapy crawl parker')
+        print(f'Spider finished, scraping took {time.process_time()-t1_start} seconds\n')
+        print(f'The scraped content can be found under Results')
+        os.chdir('../../')
 
-user_in = input('Run parser? Y/N: ')
-if user_in.upper() == 'Y':
-    cleaner.get_html_text()
+    user_in = input('Run parser? Y/N: ')
+    if user_in.upper() == 'Y':
+        cleaner.get_html_text()
 
-user_in = input('Run tokenizer? Y/N: ')
-if user_in.upper() == 'Y':
-    tokenizer.tokenize()
+    user_in = input('Run tokenizer? Y/N: ')
+    if user_in.upper() == 'Y':
+        tokenizer.tokenize()
 
-user_in = input('Run vector representation? Y/N: ')
-if user_in.upper() == 'Y':
-    links = connect_to_db.get_all()
-    indexer.indexer(links)
+    user_in = input('Run vector representation? Y/N: ')
+    if user_in.upper() == 'Y':
+        links = connect_to_db.get_all()
+        indexer.indexer(links)
 
-make_query()
+    make_query()
