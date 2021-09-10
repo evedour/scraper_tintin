@@ -25,9 +25,9 @@
 #### Vector Representation and Lemmatization
 | File    | Description |
 | ----------- | ----------- |
-| [lemmas.txt]()| Lemmas extracted in list form |
-| [pos_tags_noclosed.json]() | Tokenized and POS tagged articles, closed-class categories removed|
-| [thesaurus_dictionary.txtdic]() | Lemmas Dictionary |
+| [lemmas.json](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/lemmas.json)| Lemmas extracted in json form |
+| [pos_tags_noclosed.json](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/pos_tags_noclosed.json) | Tokenized and POS tagged articles, closed-class categories removed|
+| [thesaurus_dictionary.txtdic](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/thesaurus_dictionary.txtdic) | Lemmas Dictionary |
 
 #
 ![](pos_tagged_noclosed.jpg)
@@ -36,5 +36,5 @@
 #### Inverse Index
 | File    | Description |
 | ----------- | ----------- |
-| [inverted_index.xml]()| The final inverted index |
+| [inverted_index.xml](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/inverted_index.xml)| The final inverted index |
 
