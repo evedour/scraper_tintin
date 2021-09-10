@@ -41,6 +41,7 @@ if user_in.upper() == 'Y':
     print(f'The scraped content can be found under Results')
     os.chdir('../../')
 
+print('Before continuing, remember to open wamp server')
 user_in = input('Run parser? Y/N: ')
 if user_in.upper() == 'Y':
     cleaner.get_html_text()
