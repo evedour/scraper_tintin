@@ -23,11 +23,14 @@ def stem_lemamtize(links):
     print("Stem and lemmatize articles....")
     for doc in pbar(tokenized):
             lemmas_per_article.append(get_lemmas(doc))
-    print('Sucessfully extracted lemmas. A full list of them can be found in Results/lemmas.txt')
+    with open('Results/lemmas.json', 'w')as lemmas_out:
+        json.dump(dict(zip(range(len(tokenized)), lemmas_per_article)), lemmas_out)
+
+    print('Sucessfully extracted lemmas. A full list of them can be found in Results/lemmas.json')
 
     # create gensim dictionary and appearances of lemmas in dictionary
     thesaurus_dict = gensim.corpora.Dictionary(lemmas_per_article)
-    article_corpus = [thesaurus_dict.doc2bow(doc) for doc in tokenized]
+    article_corpus = [thesaurus_dict.doc2bow(doc) for doc in lemmas_per_article]
 
     return thesaurus_dict, article_corpus
 
@@ -45,16 +48,19 @@ def get_tagged_from_json(links):
     with open('Results/pos_tags_noclosed.json', 'w')as json_out:
         json.dump(tagged_dict, json_out)
     print('Vector format saved and can be found in Results/pos_tags_noclosed.json.')
-
+    l = [''.join(i) for i in links]
     for key in tagged_dict:
         doc = []
-        for pair in tagged_dict[key]:
-            if len(pair) == 0:
-                doc.append("a")
-                continue
-            doc.append(pair[0])
-        if len(doc) > 0:
-            tokenized.append(doc)
+        if key not in l:
+            continue
+        else:
+            for pair in tagged_dict[key]:
+                if len(pair) == 0:
+                    doc.append("a")
+                    continue
+                doc.append(pair[0])
+            if len(doc) > 0:
+                tokenized.append(doc)
 
     return tokenized
 
@@ -87,9 +93,4 @@ def get_lemmas(data):
     for lemma in lemmas:
         if lemma not in nltk.corpus.words.words():
             lemmas.remove(lemma)
-
-    # save lemmas
-    with open('Results/lemmas.txt', 'a')as lemmas_out:
-        for lemma in lemmas:
-            lemmas_out.write(f'{lemma},')
     return lemmas

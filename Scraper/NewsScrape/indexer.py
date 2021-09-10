@@ -12,15 +12,17 @@ def make_index(dictionary, cor, links):
         for lemma in list(lemmas for lemmas in dictionary.token2id):
             lemma_name = ET.SubElement(root, "lemma", name=lemma)
             lemma_id = dictionary.token2id[lemma]
+            i = 0
             for key in cor:
-                doc_id = cor.index(key)
+                doc_id=links[i]
+                i += 1
                 for pair in key:
                     if pair[0] == lemma_id:
                         tf = pair[0] / len(key)
                         break
                 idf = dictionary.num_docs / dictionary.dfs[lemma_id]
                 lemma_weight = tf * idf
-                document = ET.SubElement(lemma_name, "document", id=key, weight=str(lemma_weight))
+                document = ET.SubElement(lemma_name, "document", id=doc_id, weight=str(lemma_weight))
 
             tree = ET.ElementTree(root)
             tree.write('Results/inverted_index.xml')

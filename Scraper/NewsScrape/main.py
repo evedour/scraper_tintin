@@ -4,6 +4,7 @@ from Scraper.NewsScrape import lemmatizer
 from Scraper.NewsScrape import indexer
 import scrapy
 import gensim
+import json
 from gensim import corpora
 from scrapy.crawler import CrawlerProcess
 from NewsScrape.spiders import parker
@@ -64,8 +65,12 @@ user_in = input('Make index? Y/N')
 if user_in.upper() == 'Y':
     thesaurus_dict = corpora.Dictionary.load('Results/thesaurus_dictionary.txtdic')
     links = connect_to_db.get_all()
-    tokenized = lemmatizer.get_tagged_from_json(links)
-    cor = [thesaurus_dict.doc2bow(doc) for doc in tokenized]
+    with open('Results/lemmas.json')as lemmas_in:
+        lemmas_dict = json.load(lemmas_in)
+    lemmas = []
+    for key in lemmas_dict:
+        lemmas.append([lemmas_dict[key]])
+    cor = [thesaurus_dict.doc2bow(doc) for doc in lemmas]
     indexer.make_index(thesaurus_dict, cor, links)
 
 make_query()
