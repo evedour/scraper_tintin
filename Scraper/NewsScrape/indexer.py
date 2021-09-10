@@ -73,7 +73,7 @@ def remove_closedclasscategories(tagged_dic):
 def get_lemmas(tagged_dictionary):
     # stem and lemmatize
     lemmatizer = WordNetLemmatizer()
-    stemmer = SnowballStemmer()
+    stemmer = SnowballStemmer('english')
     lemmas = []
     for key in tagged_dictionary:
         for pair in tagged_dictionary[key]:
