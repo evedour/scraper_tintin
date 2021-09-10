@@ -25,7 +25,7 @@
 #### Vector Representation and Lemmatization
 | File    | Description |
 | ----------- | ----------- |
-| [lemmas.json](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/lemmas.json)| Lemmas extracted in json form |
+| [lemmas.json](https://github.com/evedour/scraper_tintin/commit/039f2175cf8ac3df7c533f386f91deadb84d52ff)| Lemmas extracted in json form |
 | [pos_tags_noclosed.json](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/pos_tags_noclosed.json) | Tokenized and POS tagged articles, closed-class categories removed|
 | [thesaurus_dictionary.txtdic](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/thesaurus_dictionary.txtdic) | Lemmas Dictionary |
 
