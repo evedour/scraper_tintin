@@ -23,8 +23,8 @@
 ## ΜΕΡΟΣ Β
 | Υποσύστημα    | Υλοποίηση |
 | ----------- | ----------- |
-| Προ-επεξεργασία συλλογών Ε, Α      | [preprocessor.py]()       |
-| Δημιουργία χώρου χαρακτηριστικών     | [preprocessor.py]()       |
-| Δημιουργία Διανυσμάτων χαρακτηριστικών     | [weights.py]()       |
-| Σύγκριση διανυσμάτων χαρακτηριστικών     | [compare.py]()       |
+| Προ-επεξεργασία συλλογών Ε, Α      | [preprocessor.py](https://github.com/evedour/scraper_tintin/blob/main/VectorCompare/preprocessor.py)       |
+| Δημιουργία χώρου χαρακτηριστικών     | [preprocessor.py](https://github.com/evedour/scraper_tintin/blob/main/VectorCompare/preprocessor.py)       |
+| Δημιουργία Διανυσμάτων χαρακτηριστικών     | [weights.py](https://github.com/evedour/scraper_tintin/blob/main/VectorCompare/weights.py)       |
+| Σύγκριση διανυσμάτων χαρακτηριστικών     | [compare.py](https://github.com/evedour/scraper_tintin/blob/main/VectorCompare/compare.py)       |
 
