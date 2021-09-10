@@ -8,6 +8,11 @@ from gensim.utils import simple_preprocess
 from scipy import spatial
 
 
+print(f'\n########Σύστημα σύγκρισης συλλογών########\n')
+print(f'####Project Γλωσσικής Τεχνολογίας - Σεπτέμβρης 2021####\n')
+print('##########################################################')
+
+
 def main():
     collection_e = fetch_20newsgroups(subset='train')
     collection_a = fetch_20newsgroups(subset='test')
