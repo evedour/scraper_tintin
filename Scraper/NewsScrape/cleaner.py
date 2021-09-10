@@ -7,6 +7,7 @@ import time
 
 
 def clean_link(link):
+    # remove newlines, tabs etc from link to make it usable in requests
     link = link.replace('\r', '')
     link = link.replace('\t', '')
     link = link.strip()
@@ -16,6 +17,7 @@ def clean_link(link):
 
 
 def get_politico():
+    # parser for politico rss feed
     with open('Results/news_www.politico.eu.html', 'rb')as politico:
         soup = BeautifulSoup(politico, 'html.parser')
     titles  = []
@@ -43,6 +45,7 @@ def get_politico():
 
 
 def get_euronews():
+    # parse euronews rss feed, get links and extract articles from each link
     with open('Results/news_en.html', 'rb')as euronews:
         soup = BeautifulSoup(euronews, 'html.parser')
     titles = []
@@ -71,6 +74,7 @@ def get_euronews():
 
 
 def get_bbc():
+    # parse bbc rss feed, get links and extract articles from each link
     with open('Results/news_news.html', 'rb')as bbc_news:
         soup = BeautifulSoup(bbc_news, 'html.parser')
     titles = []
@@ -95,6 +99,7 @@ def get_bbc():
 
 
 def get_aljazeera():
+    # parse aljazeera rss feed, get links and extract articles from each link
     with open('Results/news_xml.html', 'rb')as AJ:
         soup = BeautifulSoup(AJ, 'html.parser')
     titles = []
@@ -119,6 +124,7 @@ def get_aljazeera():
 
 
 def get_eureporter():
+    # parse eureporter rss feed and extract articles
     with open('Results/news_www.eureporter.co.html', 'rb') as eureporter:
         soup = BeautifulSoup(eureporter, 'html.parser')
     titles = []
@@ -146,7 +152,7 @@ def get_eureporter():
 
 
 def get_html_text():
-
+    # for each html file produced by scraper, parse it and save titles, links and articles in database
     print(f'Starting parse: Politico')
     politico_titles, politico_links, politico_articles = get_politico()
     print(f'Saving to database...')
@@ -174,7 +180,9 @@ def get_html_text():
 
     print('All articles inserted to database and can be found in localhost')
 
+
 def save_to_db(source, titles, links, articles):
+    # save to database useing MySQL
     db = MySQLdb.connect('localhost', 'root', '', 'articleDB', charset='utf8')
     insertrec = db.cursor()
 
