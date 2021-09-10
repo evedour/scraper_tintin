@@ -1,0 +1,27 @@
+# Results
+
+### Τα αποτελέσματα από όλα τα υποσυστήματα του Scraper-Tokenizer μπορούν να βρεθούν εδώ
+
+#
+
+#### Raw Scraping results
+| File    | Description |
+| ----------- | ----------- |
+| [news_en.html]()| Euronews scraping results |
+| [news_news.html]()| BBC scraping results |
+| [news_www.eureporter.co.html]()| Eureporter scraping results |
+| [news_www.politico.eu.html]()| Politico scraping results |
+| [news_xml.html]() | Aljazeera scraping results|
+#
+#### Tokenizer Output
+| File    | Description |
+| ----------- | ----------- |
+| pos_tags.json| Tokenized and POS tagged articles. File too big for github, below is a screenshot for contex. |
+![](pos_tagged.jpg)
+#
+
+#### Vector Representation and Inverse Index
+| File    | Description |
+| ----------- | ----------- |
+| [lemmas.txt]()| Lemmas extracted in list form |
+| []()| |
