@@ -36,12 +36,13 @@ def tokenize():
     punctuations = "?:!.,;"
     keys = ['token', 'tag']
     for link, article in content:
+        print(f'Tokenizing {link}')
         # remove tab, newlines etc
         article = cleaner.clean_link(article)
         # save links
         links.append(link)
         # use nltk to tokenize and tag article
-        article = article.lower(article)
+        article = article.lower()
         article = article.replace('{html}', "")
         cleans = re.compile('<.*?>')
         cleantext = re.sub(cleans, '', article)
@@ -59,5 +60,5 @@ def tokenize():
     with open('Results/pos_tags.json', 'w') as output:
         json.dump(dict(zip(links, tokenized_articles)), output)
         output.close
-    print('')
+    print('Tokenized and tagged articles can be found under Results in pos_tags.json')
 
