@@ -47,19 +47,15 @@ def get_tagged_from_json(links):
     with open('Results/pos_tags_noclosed.json', 'w')as json_out:
         json.dump(tagged_dict, json_out)
     print('Vector format saved and can be found in Results/pos_tags_noclosed.json.')
-    l = [''.join(i) for i in links]
     for key in tagged_dict:
         doc = []
-        if key not in l:
-            continue
-        else:
-            for pair in tagged_dict[key]:
-                if len(pair) == 0:
-                    doc.append("a")
-                    continue
-                doc.append(pair[0])
-            if len(doc) > 0:
-                tokenized.append(doc)
+        for pair in tagged_dict[key]:
+            if len(pair) == 0:
+                doc.append("a")
+                continue
+            doc.append(pair[0])
+        if len(doc) > 0:
+            tokenized.append(doc)
 
     return tokenized
 

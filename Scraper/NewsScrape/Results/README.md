@@ -17,6 +17,8 @@
 | File    | Description |
 | ----------- | ----------- |
 | [pos_tags.json](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/pos_tags.json)| Tokenized and POS tagged articles. |
+
+#
 ![](pos_tagged.jpg)
 #
 
@@ -26,6 +28,8 @@
 | [lemmas.txt]()| Lemmas extracted in list form |
 | [pos_tags_noclosed.json]() | Tokenized and POS tagged articles, closed-class categories removed|
 | [thesaurus_dictionary.txtdic]() | Lemmas Dictionary |
+
+#
 ![](pos_tagged_noclosed.jpg)
 #
 

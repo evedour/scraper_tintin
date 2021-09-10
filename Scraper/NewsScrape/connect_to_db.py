@@ -11,6 +11,6 @@ def connect_to_articlesdb():
 def get_all():
     crs = connect_to_articlesdb()
     print('Getting your articles...')
-    crs.execute("""SELECT link FROM articles WHERE source = \'politico\'""")
+    crs.execute("""SELECT link FROM articles""")
     print('Articles aqcuired.')
     return crs.fetchall()

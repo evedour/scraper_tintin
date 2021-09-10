@@ -74,3 +74,8 @@ if user_in.upper() == 'Y':
     indexer.make_index(thesaurus_dict, cor, links)
 
 make_query()
+
+# TODO: update results on github
+# TODO: upload non-test version
+# TODO: results for part B
+# TODO: report
