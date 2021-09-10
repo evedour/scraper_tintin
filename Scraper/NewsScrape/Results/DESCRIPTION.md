@@ -16,7 +16,8 @@
 #### Tokenizer Output
 | File    | Description |
 | ----------- | ----------- |
-| pos_tags.json| Tokenized and POS tagged articles. File too big for github, below is a screenshot for contex. |
+| pos_tags.json| Tokenized and POS tagged articles. |
+
 ![](pos_tagged.jpg)
 #
 
