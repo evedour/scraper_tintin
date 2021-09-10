@@ -8,14 +8,6 @@ def connect_to_articlesdb():
     return db.cursor()
 
 
-def get_link_from_title(title):
-    crs = connect_to_articlesdb()
-    print('Getting your article....')
-    crs.execute(f"""SELECT link FROM articles WHERE title title = '{title}'""")
-    # TODO: Error message if not found
-    return crs.fetchall()
-
-
 def get_all():
     crs = connect_to_articlesdb()
     print('Getting your articles')
