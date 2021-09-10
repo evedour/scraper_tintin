@@ -16,7 +16,7 @@
 #### Tokenizer Output
 | File    | Description |
 | ----------- | ----------- |
-| pos_tags.json| Tokenized and POS tagged articles. |
+| [pos_tags.json](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/pos_tags.json)| Tokenized and POS tagged articles. |
 
 ![](pos_tagged.jpg)
 #
@@ -25,4 +25,5 @@
 | File    | Description |
 | ----------- | ----------- |
 | [lemmas.txt]()| Lemmas extracted in list form |
-| []()| |
+| [inverted_index.xml]()| The final inverted index |
+
