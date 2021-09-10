@@ -19,18 +19,19 @@ def main():
 
     user_in = input('Run preprocessor? Y/N: ')
     if user_in.upper() == 'Y':
-        idx = 3
         e_processed = []
         a_processed = []
-        for doc in collection_e.data[:idx]:
+        for doc in collection_e.data:
             # tokenize and lemmatize all documents in collection E
             e_processed.append(preprocessor.exctract_themes(doc, 'e'))
-        for doc in collection_a.data[:idx]:
+        for doc in collection_a.data:
             a_processed.append(preprocessor.exctract_themes(doc, 'a'))
         # create dictionary based on the created lemmas
         # dictionary.token2id has id for tokens
         e_dictionary = gensim.corpora.Dictionary(e_processed)
         a_dictionary = gensim.corpora.Dictionary(a_processed)
+        e_dictionary.save('Data/e_dictionary.txtdic')
+        a_dictionary.save('Data/a_dictionary.txtdic')
         # create a dictionary reporting appearances of each word in each doc of collection e
         # this holds the number of appearances for each word in dictionary
         e_cor = [e_dictionary.doc2bow(doc) for doc in e_processed]

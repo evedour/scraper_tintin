@@ -45,6 +45,7 @@ def exctract_themes(doc, name):
     # tokenizer
     tokenized = make_tokens(doc)
     lemmatized = make_lemmas(tokenized)
+    # TODO: no txt, obly json
     with open(f'Data/themes_{name}.txt', 'w')as lemmas_out:
         for lemma in lemmatized:
             lemmas_out.write(f'{lemma},')
