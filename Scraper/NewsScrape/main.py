@@ -69,7 +69,7 @@ if user_in.upper() == 'Y':
         lemmas_dict = json.load(lemmas_in)
     lemmas = []
     for key in lemmas_dict:
-        lemmas.append([lemmas_dict[key]])
+        lemmas.append(lemmas_dict[key])
     cor = [thesaurus_dict.doc2bow(doc) for doc in lemmas]
     indexer.make_index(thesaurus_dict, cor, links)
 

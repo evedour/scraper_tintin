@@ -1,13 +1,20 @@
 from bs4 import BeautifulSoup
 from nltk.stem import WordNetLemmatizer
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
+import json
 
 
 def query(words):
     # read index
     soup = BeautifulSoup(open('./Results/inverted_index.xml', 'r'), 'lxml')
-    with open('Results/lemmas.txt', 'r')as lemmas_in:
-        lemmas = [line.split(',') for line in lemmas_in.readlines()]
+    with open('Results/lemmas.json', 'r')as lemmas_in:
+        lemma_dic = json.load(lemmas_in)
+    temp = [lemma_dic[key] for key in lemma_dic]
+    lemmas = []
+    for l in temp:
+        for lemma in l:
+            lemmas.append(lemma)
+
 
     lemmatizer = WordNetLemmatizer()
     stemmer = SnowballStemmer()

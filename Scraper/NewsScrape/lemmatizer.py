@@ -17,7 +17,6 @@ def stem_lemamtize(links):
     tokenized = get_tagged_from_json(links)
 
     # lemmatize
-    open('Results/lemmas.txt', 'w').close()
     lemmas_per_article = []
     pbar = ProgressBar()
     print("Stem and lemmatize articles....")
