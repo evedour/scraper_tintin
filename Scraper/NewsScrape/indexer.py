@@ -1,7 +1,5 @@
-import json
-from nltk.stem import PorterStemmer
-from nltk.stem import LancasterStemmer
-from nltk.stem import WordNetLemmatizer
+import ujson as json
+from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from nltk.corpus import wordnet
 from re import search
 import math
@@ -9,6 +7,7 @@ import xml.etree.cElementTree as ET
 
 
 def get_wordnet_pos(treebank_tag):
+    # convert pos tag to wordnet pos tag
     if treebank_tag.startswith('J'):
         return wordnet.ADJ
     elif treebank_tag.startswith('V'):
@@ -32,20 +31,29 @@ def indexer(links):
     lemmas = get_lemmas(tagged_dictionary)
 
     print('Counting lemma appearances')
-    with open('Results/lemma_counts.json', 'a') as vct:
+    # count frequencies and construct inverted index
+    with open('Results/inverted_index.xml', 'w') as vct:
+        root = ET.Element("inverted_index")
         for lemma in lemmas:
-            lemma_weights = []
+            lemma_name = ET.SubElement(root, "lemma", name=lemma)
+            # lemma_weights = []
             for key in tagged_dictionary:
+
                 count_in_article = 0
                 tf = term_frequency(lemma, tagged_dictionary[key])
                 idf = inverse_document_frequency(lemma, tagged_dictionary)
                 lemma_weight = tf * idf
-                lemma_weights.append([key, lemma_weight])
-            json.dump({f'{lemma}': f"{json.dumps(lemma_weights)}"}, vct)
-    print('Successfully created lemma_counts.json')
+                # lemma_weights.append([key, lemma_weight])
+
+                document = ET.SubElement(lemma_name, "document", id=key, weight=str(lemma_weight))
+            tree = ET.ElementTree(root)
+            tree.write('Results/inverted_index.xml')
+            # json.dump({f'{lemma}': f"{json.dumps(lemma_weights)}"}, vct)
+    print('Successfully created index. It can be found in the Results folder')
 
 
 def get_tagged_from_json():
+    # gets the tagged articles from local files
     with open('Results/pos_tags.json') as jsonfile:
         tagged_dict = json.load(jsonfile)
     return tagged_dict
@@ -63,7 +71,9 @@ def remove_closedclasscategories(tagged_dic):
 
 
 def get_lemmas(tagged_dictionary):
+    # stem and lemmatize
     lemmatizer = WordNetLemmatizer()
+    stemmer = SnowballStemmer()
     lemmas = []
     for key in tagged_dictionary:
         for pair in tagged_dictionary[key]:
@@ -71,7 +81,7 @@ def get_lemmas(tagged_dictionary):
                continue
             else:
                 if lemmatizer.lemmatize(pair[0]) not in lemmas:
-                    lemmas.append(lemmatizer.lemmatize(pair[0], pos=get_wordnet_pos(pair[1])))
+                    lemmas.append(stemmer.stem(lemmatizer.lemmatize(pair[0], pos=get_wordnet_pos(pair[1]))))
 
     # remove single character lemmas
     for lemma in lemmas:
@@ -106,6 +116,7 @@ def term_frequency(term, doc):
 
 
 def inverse_document_frequency(term, doc):
+    # calcilates idf given a term and a documents
     times_in_documents = 0.01
     for key in doc:
         for pair in doc[key]:
