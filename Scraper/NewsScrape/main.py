@@ -1,15 +1,31 @@
 from Scraper.NewsScrape import cleaner
 from Scraper.NewsScrape import tokenizer
-from Scraper.NewsScrape import vector_representation
+from Scraper.NewsScrape import indexer
 import scrapy
 from scrapy.crawler import CrawlerProcess
 from NewsScrape.spiders import parker
-import time
 import connect_to_db
 import os
+import index_query
+import time
 
-print(f'\n########Σύστημα συγκομιδής και δεικτοδότησης σελίδων########\n')
-print(f'####Project Γλωσσικής Τεχνολογίας - Σεπτέμβρης 2021####\n')
+
+def make_query():
+    flag = True
+    while flag:
+        print('You can type \"END\" to exit')
+        inputs = input('Enter your query: ')
+        if inputs.upper() == 'END':
+            flag = False
+            break
+        as_list = inputs.split(" ")
+        query_as_list = []
+        for i in as_list:
+            query_as_list.append(i)
+        timer_start = time.time()
+        index_query.query(query_as_list)
+        print(f'Query \"{inputs}\" took {time.time()-timer_start} seconds')
+
 
 user_in = input(f'Run spider? Y/N: ')
 if user_in.upper() == 'Y':
@@ -19,7 +35,6 @@ if user_in.upper() == 'Y':
     print(f'Spider finished, scraping took {time.process_time()-t1_start} seconds\n')
     print(f'The scraped content can be found under Results')
     os.chdir('../../')
-
 
 user_in = input('Run parser? Y/N: ')
 if user_in.upper() == 'Y':
@@ -31,12 +46,7 @@ if user_in.upper() == 'Y':
 
 user_in = input('Run vector representation? Y/N: ')
 if user_in.upper() == 'Y':
-    user_in = input('Please type "all" to run the program for the entire database or "one" to select an article by title: ')
-    if user_in.lower() == 'all':
-        links = connect_to_db.get_all()
-    else:
-        links = []
-        user_in = 'Please insert a title: '
-        links.append(connect_to_db.get_link_from_title(user_in))
+    links = connect_to_db.get_all()
+    indexer.indexer(links)
 
-    vector_representation.vectorize(links)
+make_query()
