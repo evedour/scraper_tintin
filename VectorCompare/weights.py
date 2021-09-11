@@ -13,7 +13,7 @@ def get_weights(filename, collection, dictionary, dic):
         soup = BeautifulSoup(e_xml, 'xml')
         for doc in range(len(collection.data[:1000])):
             weights = []
-            for id in themes_id:
+            for id in themes_id[:100]:
                 if id in dic.token2id.values():
                     lemma = soup.findAll('lemma', {"name": f"{themes_keys[id]}"})
                     document = lemma[0].findAll('document', {"id": f'{doc}'})
