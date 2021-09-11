@@ -1,12 +1,14 @@
 from sklearn.datasets import fetch_20newsgroups
 import compare
 import preprocessor
-import weights
 import json
 import gensim
+import weights
+from gensim import corpora
 from gensim.utils import simple_preprocess
 from scipy import spatial
-
+from Scraper.NewsScrape import indexer
+from bs4 import BeautifulSoup
 
 print(f'\n########Σύστημα σύγκρισης συλλογών########\n')
 print(f'####Project Γλωσσικής Τεχνολογίας - Σεπτέμβρης 2021####\n')
@@ -19,13 +21,12 @@ def main():
 
     user_in = input('Run preprocessor? Y/N: ')
     if user_in.upper() == 'Y':
-        e_processed = []
-        a_processed = []
-        for doc in collection_e.data:
-            # tokenize and lemmatize all documents in collection E
-            e_processed.append(preprocessor.exctract_themes(doc, 'e'))
-        for doc in collection_a.data:
-            a_processed.append(preprocessor.exctract_themes(doc, 'a'))
+        # tokenize and lemmatize all documents in collection E
+        print('Extracting lemmas in collection E: \n')
+        e_processed = preprocessor.exctract_themes(collection_e.data[:3], 'e')
+        print('\nExtracting lemmas in collection A: \n')
+        a_processed = preprocessor.exctract_themes(collection_a.data[:3], 'a')
+
         # create dictionary based on the created lemmas
         # dictionary.token2id has id for tokens
         e_dictionary = gensim.corpora.Dictionary(e_processed)
@@ -37,22 +38,15 @@ def main():
         e_cor = [e_dictionary.doc2bow(doc) for doc in e_processed]
         a_cor = [a_dictionary.doc2bow(doc) for doc in a_processed]
 
-        e_weights = weights.get_tfidf(e_cor, e_dictionary, 'e')
-        a_weights = weights.get_tfidf(a_cor, a_dictionary, 'a')
+        e_index = indexer.make_index(e_dictionary, e_cor, range(len(e_cor)), name='e')
+        a_index = indexer.make_index(a_dictionary, a_cor, range(len(a_cor)), name='a')
 
-        with open('Data/e_weights.json', 'w')as e_out:
-            json.dump(e_weights, e_out)
-            e_out.close()
-        with open('Data/a_weights.json', 'w')as a_out:
-            json.dump(a_weights, a_out)
-            a_out.close()
+    e_dictionary =corpora.Dictionary.load('Data/e_dictionary.txtdic')
+    a_dictionary =corpora.Dictionary.load('Data/a_dictionary.txtdic')
+    themes_dictionary = {k: v for k, v in sorted(e_dictionary.dfs.items(), key=lambda item: item[1])}
 
-    with open('Data/e_weights.json', 'r')as e_in:
-        e_weights = [[tuple(x) for x in list] for list in json.load(e_in)]
-        e_in.close()
-    with open('Data/e_weights.json', 'r')as a_in:
-        a_weights = [[tuple(x) for x in list] for list in json.load(a_in)]
-        a_in.close()
+    e_weights = weights.get_weights('inverted_index_e.xml', collection_e, themes_dictionary, e_dictionary)
+    a_weights = weights.get_weights('inverted_index_a.xml', collection_a, themes_dictionary, a_dictionary)
 
     flag = True
     while flag:

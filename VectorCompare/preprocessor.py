@@ -6,6 +6,7 @@ from nltk.corpus import wordnet
 from nltk.corpus import stopwords
 import gensim
 from gensim.utils import simple_preprocess
+from progressbar import ProgressBar
 
 
 def make_tokens(text):
@@ -24,7 +25,6 @@ def make_tokens(text):
         if len(token) < 4:
             no_stopwords.remove(token)
     tokenized_articles.append(no_stopwords)
-    print(f'Length {len(no_stopwords)}: {no_stopwords}')
     return tokenized_articles
 
 
@@ -41,12 +41,13 @@ def make_lemmas(data):
     return lemmatized
 
 
-def exctract_themes(doc, name):
+def exctract_themes(collection, name):
+    pbar = ProgressBar()
     # tokenizer
-    tokenized = make_tokens(doc)
-    lemmatized = make_lemmas(tokenized)
-    # TODO: no txt, obly json
-    with open(f'Data/themes_{name}.txt', 'w')as lemmas_out:
-        for lemma in lemmatized:
-            lemmas_out.write(f'{lemma},')
-    return lemmatized
+    lemmatized_collection = []
+    for doc in pbar(collection):
+        tokenized = make_tokens(doc)
+        lemmatized = make_lemmas(tokenized)
+        lemmatized_collection.append(lemmatized)
+
+    return lemmatized_collection

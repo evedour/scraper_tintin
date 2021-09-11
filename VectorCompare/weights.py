@@ -1,36 +1,25 @@
-import math
+from bs4 import BeautifulSoup
 import xml.etree.cElementTree as ET
 import json
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
 
 
-def get_tfidf(cor, dictionary, name):
-    with open(f'Data/collection_{name}.xml', 'w') as Exml:
-        root = ET.Element(f'{name}_vector')
-        weights_vector = []
-        for text in cor:
-            # text is list of tuples (lemma_id, appearances in article)
+def get_weights(filename, collection, dictionary, dic):
+    themes_id = [lemma_id for lemma_id in dictionary]
+    themes_keys = list(dic.token2id.keys())
+    themes_values = list(dic.token2id.values())
+    weights_vector = []
+    with open(filename) as e_xml:
+        soup = BeautifulSoup(e_xml, 'xml')
+        for doc in range(len(collection.data[:3])):
             weights = []
-            article_id = ET.SubElement(root, 'article', id=str(cor.index(text)))
-            for id in range(len(dictionary.token2id)):
-                # id is the id of the lemma
-               for lemma, appearances in text:
-                   tf = 0
-                   if id == lemma:
-                       tf = appearances/len(text)
-               for key in dictionary:
-                   if key == id:
-                       idf = len(cor) / dictionary.dfs[key]
-               tfidf = float(tf*idf)
-
-               for key in dictionary.token2id:
-                   if dictionary.token2id[key] == id:
-                       nme = key
-
-               term = ET.SubElement(article_id, 'term', name=nme, weight=str(tfidf))
-               weights.append((id, str(tfidf)))
+            for id in themes_id:
+                if id in dic.token2id.values():
+                    lemma = soup.findAll('lemma', {"name": f"{themes_keys[id]}"})
+                    document = lemma[0].findAll('document', {"id": f'{doc}'})
+                    attributes = dict(document[0].attrs)
+                    if float(attributes['weight']) > 0.0:
+                        weights.append((id, float(attributes['weight'])))
             weights_vector.append(weights)
-            tree = ET.ElementTree(root)
-            tree.write(f'Data/collection_{name}.xml')
 
     return weights_vector

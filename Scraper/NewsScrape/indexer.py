@@ -5,10 +5,14 @@ from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from progressbar import ProgressBar
 
 
-def make_index(dictionary, cor, links):
+def make_index(dictionary, cor, links, name=""):
     pbar = ProgressBar()
     # count frequencies and construct inverted index
-    with open('Results/inverted_index.xml', 'w') as index_out:
+    if name == "":
+        filename = 'Results/inverted_index.xml'
+    else:
+        filename = f'inverted_index_{name}.xml'
+    with open(filename, 'w') as index_out:
         print('Making xml file for inverted index')
         root = ET.Element("inverted_index")
         lemma_list = list(dictionary.token2id.keys())
@@ -16,7 +20,7 @@ def make_index(dictionary, cor, links):
         for lemma_id in pbar(range(len(dictionary.token2id))):
             idx = lemma_id_list.index(lemma_id)
             lemma_n = lemma_list[idx]
-            lemma_name = ET.SubElement(root, "lemma", name=lemma_n)
+            lemma_name = ET.SubElement(root, "lemma", name=str(lemma_n))
             i = 0
 
             for key in cor:
@@ -29,8 +33,9 @@ def make_index(dictionary, cor, links):
                     tf = r[0][0] / len(key)
                 idf = dictionary.num_docs / dictionary.dfs[lemma_id]
                 lemma_weight = tf * idf
-                document = ET.SubElement(lemma_name, "document", id=doc_id, weight=str(lemma_weight))
+                document = ET.SubElement(lemma_name, "document", id=str(doc_id), weight=str(lemma_weight))
 
         tree = ET.ElementTree(root)
-        tree.write('Results/inverted_index.xml')
+        tree.write(filename)
+
     print('Successfully created index. It can be found in the Results folder')
