@@ -15,15 +15,14 @@ def query(words):
         for lemma in l:
             lemmas.append(lemma)
 
-
     lemmatizer = WordNetLemmatizer()
-    stemmer = SnowballStemmer()
+    stemmer = SnowballStemmer('english')
 
     wghts = []
     links = []
 
     for wrd in words:
-        #lemmatize query
+        # lemmatize query
         word = stemmer.stem(lemmatizer.lemmatize(wrd, 'v'))
         for lem in lemmas:
             if word in lem:

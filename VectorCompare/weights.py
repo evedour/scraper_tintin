@@ -11,7 +11,7 @@ def get_weights(filename, collection, dictionary, dic):
     weights_vector = []
     with open(filename) as e_xml:
         soup = BeautifulSoup(e_xml, 'xml')
-        for doc in range(len(collection.data[:3])):
+        for doc in range(len(collection.data[:1000])):
             weights = []
             for id in themes_id:
                 if id in dic.token2id.values():
