@@ -23,9 +23,9 @@ def main():
     if user_in.upper() == 'Y':
         # tokenize and lemmatize all documents in collection E
         print('Extracting lemmas in collection E: \n')
-        e_processed = preprocessor.exctract_themes(collection_e.data[:1000], 'e')
+        e_processed = preprocessor.exctract_themes(collection_e.data[:100], 'e')
         print('\nExtracting lemmas in collection A: \n')
-        a_processed = preprocessor.exctract_themes(collection_a.data[:1000], 'a')
+        a_processed = preprocessor.exctract_themes(collection_a.data[:100], 'a')
 
         # create dictionary based on the created lemmas
         # dictionary.token2id has id for tokens
