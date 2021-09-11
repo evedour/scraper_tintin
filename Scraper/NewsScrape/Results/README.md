@@ -36,5 +36,6 @@
 #### Inverse Index
 | File    | Description |
 | ----------- | ----------- |
-| [inverted_index.xml](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/inverted_index.xml)| The final inverted index |
+| [inverted_index.xml](https://github.com/evedour/scraper_tintin/blob/main/Scraper/NewsScrape/Results/inverted_index.xml)| The final inverted index - File too big for github, screenshot attached below |
 
+#![](index.jpg)
